@@ -1,0 +1,25 @@
+services:
+  gitea-a:
+    image: docker.gitea.com/gitea:latest
+    container_name: gitea-a
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    volumes:
+      - ./data/gitea-a/:/data/
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8080:3000"
+  gitea-b:
+    image: docker.gitea.com/gitea:latest
+    container_name: gitea-b
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    volumes:
+      - ./data/gitea-b/:/data/
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8081:3000"
