@@ -1,13 +1,13 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/LightJack05/gitea-auto-mirror/internal/endpoints"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	router := gin.Default()
-	router.GET("/hello", func(context *gin.Context) {
-		context.JSON(200, map[string]any{
-			"message": "Hello, world!",
-		})
-	})
+	router.POST("/repo_create_hook", endpoints.RepoCreatePost)
 	router.Run()
 }
