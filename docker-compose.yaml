@@ -5,6 +5,8 @@ services:
     environment:
       - USER_UID=1000
       - USER_GID=1000
+      # You may need to adapt this for your specific docker environment
+      - GITEA__webhook__ALLOWED_HOST_LIST=gitea-auto-mirror_gitea-auto-mirror_1
     restart: always
     volumes:
       - ./data/gitea-a/:/data/
