@@ -1,9 +1,11 @@
 FROM golang:alpine AS build
 
 WORKDIR /app
-COPY . .
 
+COPY go.mod .
 RUN go mod download
+
+COPY . .
 RUN go build -o /app/gitea-auto-mirror
 
 FROM alpine:latest
