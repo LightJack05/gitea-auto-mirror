@@ -55,8 +55,6 @@ type Config struct {
 
 	// Whether to enable debug logging throughout the application
 	AppDebugLogging bool
-	// Disable verification of the mirror base URL for debugging purposes
-	DebugDisableVerifyMirrorBaseUrl bool
-	// Disable verification of the source base URL for debugging purposes
-	DebugDisableVerifySourceBaseUrl bool
+	// Disable config validation
+	DisableConfigCheck bool
 }
