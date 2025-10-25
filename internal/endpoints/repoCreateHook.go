@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"log"
 	"net/http"
 	"regexp"
 
@@ -18,8 +19,15 @@ func RepoCreatePost(c *gin.Context) {
 	}
 
 	if !shouldModifyRepo(createEvent.Repository.FullName) {
+		if config.GetActiveConfig().AppDebugLogging {
+			log.Printf("Request for repo %s has been ignored due to regex filter.", createEvent.Repository.FullName)
+		}
 		c.Status(http.StatusNoContent)
 		return
+	}
+
+	if config.GetActiveConfig().AppDebugLogging {
+		log.Printf("Processing hook for repo %s", createEvent.Repository.FullName)
 	}
 
 	c.Status(http.StatusNotImplemented)
@@ -34,4 +42,3 @@ func shouldModifyRepo(repoPath string) bool {
 
 	return r.MatchString(repoPath)
 }
-
