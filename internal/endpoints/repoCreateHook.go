@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"regexp"
@@ -30,6 +31,15 @@ func RepoCreatePost(c *gin.Context) {
 		log.Printf("Processing hook for repo %s", createEvent.Repository.FullName)
 	}
 
+	requestBody := createPushMirrorRequestBody(createEvent.Repository.FullName)
+
+	requestJson, err := json.Marshal(requestBody)
+	if err != nil {
+		log.Println("ERROR: Could not marshal request Go struct to JSON string. Is the application configured correctly?")
+	}
+	//TODO: Send http request
+	log.Println(string(requestJson))
+
 	c.Status(http.StatusNotImplemented)
 }
 
@@ -41,4 +51,19 @@ func shouldModifyRepo(repoPath string) bool {
 	r := regexp.MustCompile(config.GetActiveConfig().SourceRepoRegExFilter)
 
 	return r.MatchString(repoPath)
+}
+
+func createPushMirrorRequestBody(repoPath string) datastructures.RepoCreatePushMirrorBody {
+	requestBody := datastructures.RepoCreatePushMirrorBody{
+		//TODO: Add a config option for this
+		Interval:       "8h0m0s",
+		RemoteAddress:  config.GetActiveConfig().MirrorBaseUrl + repoPath,
+		RemoteUsername: config.GetActiveConfig().MirrorUsername,
+		RemotePassword: config.GetActiveConfig().MirrorPassword,
+		SyncOnCommit:   true,
+	}
+	if config.GetActiveConfig().MirrorUrlAppendDotGit {
+		requestBody.RemoteAddress = requestBody.RemoteAddress + string(".git")
+	}
+	return requestBody
 }
