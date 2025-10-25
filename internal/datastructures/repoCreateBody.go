@@ -2,7 +2,7 @@ package datastructures
 
 import "time"
 
-type Event struct {
+type RepoCreateEvent struct {
 	Action       string       `json:"action"`
 	Repository   Repository   `json:"repository"`
 	Organization User         `json:"organization"`
