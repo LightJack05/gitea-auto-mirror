@@ -76,8 +76,7 @@ func shouldModifyRepo(repoPath string) bool {
 
 func createPushMirrorRequestBody(repoPath string) datastructures.RepoCreatePushMirrorBody {
 	requestBody := datastructures.RepoCreatePushMirrorBody{
-		//TODO: Add a config option for this
-		Interval:       "8h0m0s",
+		Interval:       config.GetActiveConfig().MirrorSyncInterval,
 		RemoteAddress:  config.GetActiveConfig().MirrorBaseUrl + repoPath,
 		RemoteUsername: config.GetActiveConfig().MirrorUsername,
 		RemotePassword: config.GetActiveConfig().MirrorPassword,

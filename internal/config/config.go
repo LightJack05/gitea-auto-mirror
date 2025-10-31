@@ -24,6 +24,12 @@ type Config struct {
 	// Whether to verify TLS certificates when connecting to the mirror server
 	MirrorVerifyTLS bool
 
+	// The interval between mirror syncs, in Go duration format
+	// Will be applied to the repo push mirror entry in Gitea 
+	// Example: 10m for 10 minutes, 1h for 1 hour, 2h15m for 2 hours and 15 minutes
+	//  Default is empty string, which means the default interval of Gitea is used (8h)
+	MirrorSyncInterval string
+
 	// The base URL of the source server
 	// Format as http[s]://<hostname>[:<port>]/
 	// Example: http://source.example.com:3000/
