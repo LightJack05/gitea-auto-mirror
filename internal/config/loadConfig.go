@@ -20,6 +20,7 @@ func LoadConfigFromEnv() {
 	activeConfig.MirrorUsername = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_USERNAME")
 	activeConfig.MirrorPassword = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_PASSWORD")
 	activeConfig.MirrorVerifyTLS = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_VERIFY_TLS") != "false"
+	activeConfig.MirrorSyncInterval = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_SYNC_INTERVAL")
 	activeConfig.SourceBaseUrl = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_BASE_URL")
 	activeConfig.SourceRepoRegExFilter = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_REPO_REGEX_FILTER")
 	activeConfig.SourceVerifyTLS = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_VERIFY_TLS") != "false"
@@ -29,6 +30,11 @@ func LoadConfigFromEnv() {
 	activeConfig.ApiPassword = os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD")
 	activeConfig.AppDebugLogging = os.Getenv("GITEA_AUTO_MIRROR_APP_DEBUG_LOGGING") == "true"
 	activeConfig.DisableConfigCheck = os.Getenv("GITEA_AUTO_MIRROR_DISABLE_CONFIG_CHECK") == "true"
+
+	//If no sync interval is set, use Gitea default
+	if activeConfig.MirrorSyncInterval == "" {
+		activeConfig.MirrorSyncInterval = "8h0m0s" // Gitea default
+	}
 
 	//If there is no trailing slash on the URLs of source and mirror server, add it and log a warning
 	if len(activeConfig.MirrorBaseUrl) > 0 && activeConfig.MirrorBaseUrl[len(activeConfig.MirrorBaseUrl)-1] != '/' {
