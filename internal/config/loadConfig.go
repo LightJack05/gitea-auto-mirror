@@ -14,6 +14,7 @@ func GetActiveConfig() Config {
 }
 
 func LoadConfigFromEnv() {
+
 	activeConfig.MirrorBaseUrl = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_BASE_URL")
 	activeConfig.MirrorUrlAppendDotGit = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_URL_APPEND_DOT_GIT") == "true"
 	activeConfig.MirrorUsername = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_USERNAME")
@@ -28,6 +29,16 @@ func LoadConfigFromEnv() {
 	activeConfig.ApiPassword = os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD")
 	activeConfig.AppDebugLogging = os.Getenv("GITEA_AUTO_MIRROR_APP_DEBUG_LOGGING") == "true"
 	activeConfig.DisableConfigCheck = os.Getenv("GITEA_AUTO_MIRROR_DISABLE_CONFIG_CHECK") == "true"
+
+	//If there is no trailing slash on the URLs of source and mirror server, add it and log a warning
+	if len(activeConfig.MirrorBaseUrl) > 0 && activeConfig.MirrorBaseUrl[len(activeConfig.MirrorBaseUrl)-1] != '/' {
+		activeConfig.MirrorBaseUrl += "/"
+		log.Println("WARNING: Added trailing slash to GITEA_AUTO_MIRROR_MIRROR_BASE_URL")
+	}
+	if len(activeConfig.SourceBaseUrl) > 0 && activeConfig.SourceBaseUrl[len(activeConfig.SourceBaseUrl)-1] != '/' {
+		activeConfig.SourceBaseUrl += "/"
+		log.Println("WARNING: Added trailing slash to GITEA_AUTO_MIRROR_SOURCE_BASE_URL")
+	}
 
 	log.Printf(`Loaded values from Environment:
 	GITEA_AUTO_MIRROR_MIRROR_BASE_URL=%s
@@ -109,4 +120,5 @@ func ValidateConfig(config Config) {
 	}
 
 	log.Println("Configuration validation complete.")
+
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const repoApiPathFormat string = "%s/api/v1/repos/%s/%s/push_mirrors"
+const repoApiPathFormat string = "%sapi/v1/repos/%s/%s/push_mirrors"
 
 func RepoCreatePost(c *gin.Context) {
 	var createEvent datastructures.RepoCreateEvent
