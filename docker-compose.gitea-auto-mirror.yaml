@@ -1,0 +1,15 @@
+services:
+  gitea-auto-mirror:
+    container_name: gitea-auto-mirror
+    env_file:
+      - .env
+    environment:
+      - GITEA_AUTO_MIRROR_MIRROR_BASE_URL=http://gitea-b:3000/
+      - GITEA_AUTO_MIRROR_MIRROR_URL_APPEND_DOT_GIT=false
+      - GITEA_AUTO_MIRROR_MIRROR_VERIFY_TLS=true
+      - GITEA_AUTO_MIRROR_SOURCE_BASE_URL=http://gitea-a:3000
+      - GITEA_AUTO_MIRROR_SOURCE_REPO_REGEX_FILTER=^test1/.*$
+      - GITEA_AUTO_MIRROR_SOURCE_VERIFY_TLS=true
+      - GITEA_AUTO_MIRROR_APP_DEBUG_LOGGING=true
+      - GITEA_AUTO_MIRROR_DISABLE_CONFIG_CHECK=false
+    build: .
