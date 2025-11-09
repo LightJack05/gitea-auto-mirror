@@ -1,5 +1,9 @@
 package config
 
+import (
+	"github.com/LightJack05/gitea-auto-mirror/internal/crypto"
+)
+
 // Config The configuration object loaded from environment variables
 type Config struct {
 	// The base URL of the mirror server
@@ -53,7 +57,7 @@ type Config struct {
 
 	// Password hash for authenticating incoming API requests
 	// Mutually exclusive with ApiPassword
-	ApiPasswordHash string
+	ApiPasswordHash *crypto.Argon2idPasswordHash 
 
 	// Plaintext password for authenticating incoming API requests
 	// Mutually exclusive with ApiPasswordHash
@@ -63,4 +67,5 @@ type Config struct {
 	AppDebugLogging bool
 	// Disable config validation
 	DisableConfigCheck bool
+	
 }

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/LightJack05/gitea-auto-mirror/internal/crypto"
 	"log"
 	"net/url"
 	"os"
@@ -26,7 +27,6 @@ func LoadConfigFromEnv() {
 	activeConfig.SourceVerifyTLS = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_VERIFY_TLS") != "false"
 	activeConfig.SourceUsername = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_USERNAME")
 	activeConfig.SourcePassword = os.Getenv("GITEA_AUTO_MIRROR_SOURCE_PASSWORD")
-	activeConfig.ApiPasswordHash = os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD_HASH")
 	activeConfig.ApiPassword = os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD")
 	activeConfig.AppDebugLogging = os.Getenv("GITEA_AUTO_MIRROR_APP_DEBUG_LOGGING") == "true"
 	activeConfig.DisableConfigCheck = os.Getenv("GITEA_AUTO_MIRROR_DISABLE_CONFIG_CHECK") == "true"
@@ -44,6 +44,18 @@ func LoadConfigFromEnv() {
 	if len(activeConfig.SourceBaseUrl) > 0 && activeConfig.SourceBaseUrl[len(activeConfig.SourceBaseUrl)-1] != '/' {
 		activeConfig.SourceBaseUrl += "/"
 		log.Println("WARNING: Added trailing slash to GITEA_AUTO_MIRROR_SOURCE_BASE_URL")
+	}
+
+	passwordHashString := os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD_HASH")
+
+	if passwordHashString != "" {
+		passwordHash, err := crypto.ParseHash(passwordHashString)
+		if err != nil {
+			log.Panicf("Failed to parse GITEA_AUTO_MIRROR_API_PASSWORD_HASH: %s", err.Error())
+		}
+		activeConfig.ApiPasswordHash = passwordHash
+	} else {
+		activeConfig.ApiPasswordHash = nil
 	}
 
 	log.Printf(`Loaded values from Environment:
@@ -72,11 +84,30 @@ func LoadConfigFromEnv() {
 		activeConfig.SourceVerifyTLS,
 		"**redacted**",
 		"**redacted**",
-		activeConfig.ApiPasswordHash,
-		activeConfig.ApiPassword,
+		"**redacted**",
+		"**redacted**",
 		activeConfig.AppDebugLogging,
 		activeConfig.DisableConfigCheck,
 	)
+
+	if(activeConfig.ApiPasswordHash != nil) {
+		log.Printf(`Parsed hash from GITEA_AUTO_MIRROR_API_PASSWORD_HASH:
+		Version: %d
+		Time: %d
+		Memory: %d
+		Parallelism: %d
+		Salt: %x
+		Hash: %x
+		`,
+			activeConfig.ApiPasswordHash.Version,
+			activeConfig.ApiPasswordHash.Time,
+			activeConfig.ApiPasswordHash.Memory,
+			activeConfig.ApiPasswordHash.Parallelism,
+			activeConfig.ApiPasswordHash.Salt,
+			activeConfig.ApiPasswordHash.Hash,
+		)
+	}
+
 
 	if activeConfig.DisableConfigCheck {
 		log.Println("WARNING: Configuration validation is disabled!")
@@ -99,11 +130,11 @@ func ValidateConfig(config Config) {
 	}
 
 	// API Password validation
-	if config.ApiPassword == "" && config.ApiPasswordHash == "" {
+	if config.ApiPassword == "" && config.ApiPasswordHash == nil {
 		log.Println("WARNING: There is no API password or hash set. Continuing with unsecured API endpoint...")
 	}
 
-	if config.ApiPassword != "" && config.ApiPasswordHash != "" {
+	if config.ApiPassword != "" && config.ApiPasswordHash != nil {
 		panic("GITEA_AUTO_MIRROR_API_PASSWORD and GITEA_AUTO_MIRROR_API_PASSWORD_HASH are mutually exclusive!")
 	}
 
