@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/LightJack05/gitea-auto-mirror/internal/authentication"
 	"github.com/LightJack05/gitea-auto-mirror/internal/config"
 	"github.com/LightJack05/gitea-auto-mirror/internal/endpoints"
+	"github.com/LightJack05/gitea-auto-mirror/internal/authentication"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +11,12 @@ import (
 func main() {
 	config.LoadConfigFromEnv()
 	router := gin.Default()
-	router.POST("/repo_create_hook", endpoints.RepoCreatePost)
+
+	router.GET("/health", nil)
+
+	hooks := router.Group("/hooks/")
+	hooks.Use(authentication.AuthenticationMiddleware())
+	hooks.POST("/repo_create", endpoints.RepoCreatePost)
+
 	router.Run()
 }
