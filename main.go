@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/LightJack05/gitea-auto-mirror/internal/authentication"
 	"github.com/LightJack05/gitea-auto-mirror/internal/config"
 	"github.com/LightJack05/gitea-auto-mirror/internal/endpoints"
 
