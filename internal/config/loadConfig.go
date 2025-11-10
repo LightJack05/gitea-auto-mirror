@@ -9,6 +9,11 @@ import (
 )
 
 var activeConfig Config
+var configLoaded bool = false
+
+func GetConfigLoaded() bool {
+	return configLoaded
+}
 
 func GetActiveConfig() Config {
 	return activeConfig
@@ -90,7 +95,7 @@ func LoadConfigFromEnv() {
 		activeConfig.DisableConfigCheck,
 	)
 
-	if(activeConfig.ApiPasswordHash != nil) {
+	if activeConfig.ApiPasswordHash != nil {
 		log.Printf(`Parsed hash from GITEA_AUTO_MIRROR_API_PASSWORD_HASH:
 		Version: %d
 		Time: %d
@@ -108,12 +113,12 @@ func LoadConfigFromEnv() {
 		)
 	}
 
-
 	if activeConfig.DisableConfigCheck {
 		log.Println("WARNING: Configuration validation is disabled!")
 		return
 	}
 	ValidateConfig(activeConfig)
+	configLoaded = true
 }
 
 func ValidateConfig(config Config) {
