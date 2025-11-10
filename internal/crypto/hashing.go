@@ -25,15 +25,21 @@ func HashPassword(password string, memory uint32, time uint32, parallelism uint8
 func ParseHash(hash string) (*Argon2idPasswordHash, error) {
 	segments := strings.Split(hash, "$")
 	if len(segments) != 6 {
-		return nil, fmt.Errorf("invalid hash format")
+		return nil, fmt.Errorf("invalid hash format: expected 6 hash segments, found %d", len(segments))
 	}
 	if segments[1] != "argon2id" {
 		return nil, fmt.Errorf("unsupported hash type: %s", segments[1])
 	}
 	var argon2Hash Argon2idPasswordHash
 	fmt.Sscanf(segments[2], "v=%d", &argon2Hash.Version)
+	if(argon2Hash.Version != argon2.Version){
+		return nil, fmt.Errorf("unsupported or invalid argon2 version: %d", argon2Hash.Version)
+	}
 
 	fmt.Sscanf(segments[3], "m=%d,t=%d,p=%d", &argon2Hash.Memory, &argon2Hash.Time, &argon2Hash.Parallelism)
+	if(argon2Hash.Memory == 0 || argon2Hash.Time == 0 || argon2Hash.Parallelism == 0){
+		return nil, fmt.Errorf("cannot parse hash with zero values: one or more parameters were 0: m=%d,t=%d,p=%d", argon2Hash.Memory, argon2Hash.Time, argon2Hash.Parallelism)
+	}
 
 	saltBytes, err := decodeHashBase64(segments[4])
 	if err != nil {
