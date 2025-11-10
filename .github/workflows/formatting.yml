@@ -1,0 +1,15 @@
+name: Formatting Check
+
+on: [pull_request]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ">=1.25.0"
+      - name: Project Formatting
+        run: go fmt; if [[ -z "$(git status --porcelain=v1)" ]]; then echo "Project appears to be formatted correctly!"; else echo "Formatting is not aligned to go standard."; exit 1; fi
