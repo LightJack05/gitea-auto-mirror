@@ -1,11 +1,13 @@
 package config
 
 import (
-	"github.com/LightJack05/gitea-auto-mirror/internal/crypto"
+	"fmt"
 	"log"
 	"net/url"
 	"os"
 	"regexp"
+
+	"github.com/LightJack05/gitea-auto-mirror/internal/crypto"
 )
 
 var activeConfig Config
@@ -117,50 +119,112 @@ func LoadConfigFromEnv() {
 		log.Println("WARNING: Configuration validation is disabled!")
 		return
 	}
-	ValidateConfig(activeConfig)
+	err := ValidateConfig(activeConfig)
+	if err != nil {
+		panic(fmt.Errorf("Config validation failed: %v", err))
+	}
 	configLoaded = true
 }
 
-func ValidateConfig(config Config) {
+func ValidateConfig(config Config) error {
 	log.Println("Begining config validation...")
-	// URL validation
-	mirrorBaseURL, err := url.ParseRequestURI(config.MirrorBaseUrl)
-	if err != nil || (mirrorBaseURL.Scheme != "http" && mirrorBaseURL.Scheme != "https") {
-		panic("Invalid GITEA_AUTO_MIRROR_MIRROR_BASE_URL in configuration: " + config.MirrorBaseUrl)
+	// Required values validation
+	err := validateRequiredParameters(config)
+	if err != nil {
+		return fmt.Errorf("Parameter validation failed: %v", err)
 	}
-
-	sourceBaseURL, err := url.ParseRequestURI(config.SourceBaseUrl)
-	if err != nil || (sourceBaseURL.Scheme != "http" && sourceBaseURL.Scheme != "https") {
-		panic("Invalid GITEA_AUTO_MIRROR_SOURCE_BASE_URL in configuration: " + config.SourceBaseUrl)
+	// URL validation
+	err = validateURLs(config)
+	if err != nil {
+		return fmt.Errorf("URL validation failed: %v", err)
 	}
 
 	// API Password validation
+	err = validateAuthValues(config)
+	if err != nil {
+		return fmt.Errorf("API Authentication credential validation failed: %v", err)
+	}
+
+	// Source credentials validation
+	err = validateServerCredentials(config)
+	if err != nil {
+		return fmt.Errorf("Server credential validation failed: %v", err)
+	}
+
+	// Validate regex
+	err = validateRegEx(config)
+	if err != nil {
+		return fmt.Errorf("RegEx validation failed: %v", err)
+	}
+
+	log.Println("Configuration validation complete.")
+	return nil
+}
+
+func validateRequiredParameters(config Config) error {
+	if config.MirrorBaseUrl == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_BASE_URL is required.")
+	}
+	if config.SourceBaseUrl == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_BASE_URL is required.")
+	}
+	if config.SourceUsername == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_USERNAME is required.")
+	}
+	if config.SourcePassword == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_PASSWORD is required.")
+	}
+	if config.MirrorUsername == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_USERNAME is required.")
+	}
+	if config.MirrorPassword == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_PASSWORD is required.")
+	}
+	return nil
+}
+
+func validateRegEx(config Config) error {
+	if !(config.SourceRepoRegExFilter == "") {
+		_, err := regexp.Compile(config.SourceRepoRegExFilter)
+		if err != nil {
+			return fmt.Errorf("RegEx in GITEA_AUTO_MIRROR_SOURCE_REPO_REGEX_FILTER must compile. Invalid value: %v", err)
+		}
+	}
+	return nil
+}
+
+func validateServerCredentials(config Config) error {
+	if config.SourceUsername == "" || config.SourcePassword == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_USERNAME and GITEA_AUTO_MIRROR_SOURCE_PASSWORD must be set!")
+	}
+
+	// Mirror credentials validation
+	if config.MirrorUsername == "" || config.MirrorPassword == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_USERNAME and GITEA_AUTO_MIRROR_MIRROR_PASSWORD must be set!")
+	}
+	return nil
+}
+
+func validateAuthValues(config Config) error {
 	if config.ApiPassword == "" && config.ApiPasswordHash == nil {
 		log.Println("WARNING: There is no API password or hash set. Continuing with unsecured API endpoint...")
 	}
 
 	if config.ApiPassword != "" && config.ApiPasswordHash != nil {
-		panic("GITEA_AUTO_MIRROR_API_PASSWORD and GITEA_AUTO_MIRROR_API_PASSWORD_HASH are mutually exclusive!")
+		return fmt.Errorf("GITEA_AUTO_MIRROR_API_PASSWORD and GITEA_AUTO_MIRROR_API_PASSWORD_HASH are mutually exclusive!")
+	}
+	return nil
+}
+
+func validateURLs(config Config) error {
+	mirrorBaseURL, err := url.ParseRequestURI(config.MirrorBaseUrl)
+	if err != nil || (mirrorBaseURL.Scheme != "http" && mirrorBaseURL.Scheme != "https") {
+		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_MIRROR_BASE_URL in configuration: %v", config.MirrorBaseUrl)
 	}
 
-	// Source credentials validation
-	if config.SourceUsername == "" || config.SourcePassword == "" {
-		panic("GITEA_AUTO_MIRROR_SOURCE_USERNAME and GITEA_AUTO_MIRROR_SOURCE_PASSWORD must be set!")
+	sourceBaseURL, err := url.ParseRequestURI(config.SourceBaseUrl)
+	if err != nil || (sourceBaseURL.Scheme != "http" && sourceBaseURL.Scheme != "https") {
+		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_SOURCE_BASE_URL in configuration: %v", config.SourceBaseUrl)
 	}
-
-	// Mirror credentials validation
-	if config.MirrorUsername == "" || config.MirrorPassword == "" {
-		panic("GITEA_AUTO_MIRROR_MIRROR_USERNAME and GITEA_AUTO_MIRROR_MIRROR_PASSWORD must be set!")
-	}
-
-	// Validate regex
-	if !(config.SourceRepoRegExFilter == "") {
-		_, err := regexp.Compile(config.SourceRepoRegExFilter)
-		if err != nil {
-			panic("RegEx in GITEA_AUTO_MIRROR_SOURCE_REPO_REGEX_FILTER must compile. Invalid value: " + err.Error())
-		}
-	}
-
-	log.Println("Configuration validation complete.")
-
+	return nil
 }
