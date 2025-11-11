@@ -162,16 +162,16 @@ func ValidateConfig(config Config) error {
 }
 
 func validateRequiredParameters(config Config) error {
-	if activeConfig.MirrorBaseUrl == "" {
+	if config.MirrorBaseUrl == "" {
 		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_BASE_URL is required.")
 	}
-	if activeConfig.SourceBaseUrl == "" {
+	if config.SourceBaseUrl == "" {
 		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_BASE_URL is required.")
 	}
-	if activeConfig.SourceUsername == "" {
+	if config.SourceUsername == "" {
 		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_USERNAME is required.")
 	}
-	if activeConfig.SourcePassword == "" {
+	if config.SourcePassword == "" {
 		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_PASSWORD is required.")
 	}
 	return nil
@@ -213,12 +213,12 @@ func validateAuthValues(config Config) error {
 func validateURLs(config Config) error {
 	mirrorBaseURL, err := url.ParseRequestURI(config.MirrorBaseUrl)
 	if err != nil || (mirrorBaseURL.Scheme != "http" && mirrorBaseURL.Scheme != "https") {
-		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_MIRROR_BASE_URL in configuration: " + config.MirrorBaseUrl)
+		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_MIRROR_BASE_URL in configuration: %v", config.MirrorBaseUrl)
 	}
 
 	sourceBaseURL, err := url.ParseRequestURI(config.SourceBaseUrl)
 	if err != nil || (sourceBaseURL.Scheme != "http" && sourceBaseURL.Scheme != "https") {
-		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_SOURCE_BASE_URL in configuration: " + config.SourceBaseUrl)
+		return fmt.Errorf("Invalid GITEA_AUTO_MIRROR_SOURCE_BASE_URL in configuration: %v", config.SourceBaseUrl)
 	}
 	return nil
 }
