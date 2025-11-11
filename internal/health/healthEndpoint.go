@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// HealthCheck Handles health check requests
 func HealthCheck(c *gin.Context) {
 
 	if config.GetConfigLoaded() == false {

@@ -10,11 +10,15 @@ import (
 )
 
 func main() {
+	// Load configuration from environment variables
 	config.LoadConfigFromEnv()
+	// Start Gin router
 	router := gin.Default()
 
+	// Health check endpoint
 	router.GET("/health", health.HealthCheck)
 
+	// Webhook endpoints
 	hooks := router.Group("/hooks/")
 	hooks.Use(authentication.AuthenticationMiddleware())
 	hooks.POST("/repo_create", endpoints.RepoCreatePost)

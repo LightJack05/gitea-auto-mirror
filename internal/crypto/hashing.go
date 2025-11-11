@@ -10,6 +10,7 @@ import (
 	"golang.org/x/crypto/argon2"
 )
 
+// HashPassword represents an Argon2id hashed password with its parameters
 func HashPassword(password string, memory uint32, time uint32, parallelism uint8, salt []byte, hashLength uint32) *Argon2idPasswordHash {
 	hash := argon2.IDKey([]byte(password), salt, time, memory, parallelism, hashLength)
 	return &Argon2idPasswordHash{
@@ -22,6 +23,7 @@ func HashPassword(password string, memory uint32, time uint32, parallelism uint8
 	}
 }
 
+// ParseHash parses an Argon2id hash string into an Argon2idPasswordHash struct
 func ParseHash(hash string) (*Argon2idPasswordHash, error) {
 	segments := strings.Split(hash, "$")
 	if len(segments) != 6 {
@@ -55,6 +57,7 @@ func ParseHash(hash string) (*Argon2idPasswordHash, error) {
 	return &argon2Hash, nil
 }
 
+// CompareHashes compares two Argon2idPasswordHash structs for equality
 func CompareHashes(hash1, hash2 *Argon2idPasswordHash) bool {
 	if hash1.Memory != hash2.Memory || hash1.Time != hash2.Time || hash1.Parallelism != hash2.Parallelism || hash1.Version != hash2.Version {
 		return false
@@ -65,6 +68,7 @@ func CompareHashes(hash1, hash2 *Argon2idPasswordHash) bool {
 	return true
 }
 
+// decodeHashBase64 decodes a base64 encoded string, trying both standard and raw encodings
 func decodeHashBase64(encoded string) ([]byte, error) {
 	bytes, err := base64.StdEncoding.DecodeString(encoded)
 	if err == nil {

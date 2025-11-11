@@ -11,6 +11,7 @@ import (
 
 )
 
+// ValidateRequestAuthHeader Returns true if headerContent contains a valid authentication token based on the applications auth configuration
 func ValidateRequestAuthHeader(headerContent string) bool {
 	if(config.GetActiveConfig().ApiPasswordHash == nil && config.GetActiveConfig().ApiPassword == "") {
 		// Auth is disabled
