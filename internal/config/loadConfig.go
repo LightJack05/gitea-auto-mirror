@@ -174,6 +174,12 @@ func validateRequiredParameters(config Config) error {
 	if config.SourcePassword == "" {
 		return fmt.Errorf("GITEA_AUTO_MIRROR_SOURCE_PASSWORD is required.")
 	}
+	if config.MirrorUsername == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_USERNAME is required.")
+	}
+	if config.MirrorPassword == "" {
+		return fmt.Errorf("GITEA_AUTO_MIRROR_MIRROR_PASSWORD is required.")
+	}
 	return nil
 }
 
