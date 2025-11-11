@@ -18,6 +18,7 @@ import (
 
 const repoApiPathFormat string = "%sapi/v1/repos/%s/%s/push_mirrors"
 
+// RepoCreatePost Handles repository creation events and sets up push mirrors
 func RepoCreatePost(c *gin.Context) {
 	var createEvent datastructures.RepoCreateEvent
 	if err := c.BindJSON(&createEvent); err != nil {
@@ -56,6 +57,7 @@ func RepoCreatePost(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// marshalRequestBody Converts the request body struct to a JSON string
 func marshalRequestBody(createEvent datastructures.RepoCreatePushMirrorBody) string {
 	jsonString, err := json.Marshal(createEvent)
 	if err != nil {
@@ -64,6 +66,7 @@ func marshalRequestBody(createEvent datastructures.RepoCreatePushMirrorBody) str
 	return string(jsonString)
 }
 
+// shouldModifyRepo Determines if the repository should be modified based on the regex filter
 func shouldModifyRepo(repoPath string) bool {
 	if config.GetActiveConfig().SourceRepoRegExFilter == "" {
 		return true
@@ -74,6 +77,7 @@ func shouldModifyRepo(repoPath string) bool {
 	return r.MatchString(repoPath)
 }
 
+// createPushMirrorRequestBody Builds the request body for creating a push mirror
 func createPushMirrorRequestBody(repoPath string) datastructures.RepoCreatePushMirrorBody {
 	requestBody := datastructures.RepoCreatePushMirrorBody{
 		Interval:       config.GetActiveConfig().MirrorSyncInterval,
@@ -88,10 +92,12 @@ func createPushMirrorRequestBody(repoPath string) datastructures.RepoCreatePushM
 	return requestBody
 }
 
+// buildRepoApiUrl Constructs the API URL for the repository
 func buildRepoApiUrl(createEvent datastructures.RepoCreateEvent) string {
 	return fmt.Sprintf(repoApiPathFormat, config.GetActiveConfig().SourceBaseUrl, createEvent.Repository.Owner.Login, createEvent.Repository.Name)
 }
 
+// addMirrorToRepo Sends the request to add a push mirror to the repository
 func addMirrorToRepo(requestBodyJson string, repoApiUrl string) error {
 	client := &http.Client{
 		Timeout: 10 * time.Second,

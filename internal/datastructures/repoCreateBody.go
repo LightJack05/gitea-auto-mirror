@@ -2,6 +2,7 @@ package datastructures
 
 import "time"
 
+// RepoCreateEvent represents the payload for a repository creation event webhook
 type RepoCreateEvent struct {
 	Action       string       `json:"action"`
 	Repository   Repository   `json:"repository"`

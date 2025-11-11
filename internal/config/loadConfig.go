@@ -13,14 +13,17 @@ import (
 var activeConfig Config
 var configLoaded bool = false
 
+// GetConfigLoaded Returns whether the configuration has been loaded
 func GetConfigLoaded() bool {
 	return configLoaded
 }
 
+// GetActiveConfig Returns the active configuration
 func GetActiveConfig() Config {
 	return activeConfig
 }
 
+// LoadConfigFromEnv Loads configuration from environment variables into the activeConfig variable
 func LoadConfigFromEnv() {
 
 	activeConfig.MirrorBaseUrl = os.Getenv("GITEA_AUTO_MIRROR_MIRROR_BASE_URL")
@@ -53,6 +56,7 @@ func LoadConfigFromEnv() {
 		log.Println("WARNING: Added trailing slash to GITEA_AUTO_MIRROR_SOURCE_BASE_URL")
 	}
 
+	// Parse API password hash if set
 	passwordHashString := os.Getenv("GITEA_AUTO_MIRROR_API_PASSWORD_HASH")
 
 	if passwordHashString != "" {
@@ -65,6 +69,7 @@ func LoadConfigFromEnv() {
 		activeConfig.ApiPasswordHash = nil
 	}
 
+	// Log loaded values
 	log.Printf(`Loaded values from Environment:
 	GITEA_AUTO_MIRROR_MIRROR_BASE_URL=%s
 	GITEA_AUTO_MIRROR_MIRROR_URL_APPEND_DOT_GIT=%t
@@ -97,6 +102,7 @@ func LoadConfigFromEnv() {
 		activeConfig.DisableConfigCheck,
 	)
 
+	// Log parsed hash details
 	if activeConfig.ApiPasswordHash != nil {
 		log.Printf(`Parsed hash from GITEA_AUTO_MIRROR_API_PASSWORD_HASH:
 		Version: %d
