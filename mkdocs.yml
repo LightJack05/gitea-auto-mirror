@@ -1,0 +1,17 @@
+site_name: Gitea Auto Mirror Documentation
+theme:
+  name: mkdocs
+  color_mode: auto
+  user_color_mode_toggle: true
+nav:
+  - Home: index.md
+  - Installing:
+    - Introduction: installing/index.md
+    - Docker Compose: installing/docker-compose.md
+    - Kubernetes: installing/kubernetes.md
+  - Configuration: 
+    - Introduction: configuring/index.md
+    - Source Configuration: configuring/source.md
+    - Gitea Auto Mirror Configuration: configuring/gitea-auto-mirror.md
+    - Mirror Configuration: configuring/mirror.md
+    
