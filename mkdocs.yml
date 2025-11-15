@@ -9,4 +9,9 @@ nav:
     - Introduction: installing/index.md
     - Docker Compose: installing/docker-compose.md
     - Kubernetes: installing/kubernetes.md
-  - Configuration: configuring/index.md
+  - Configuration: 
+    - Introduction: configuring/index.md
+    - Source Configuration: configuring/source.md
+    - Gitea Auto Mirror Configuration: configuring/gitea-auto-mirror.md
+    - Mirror Configuration: configuring/mirror.md
+    
