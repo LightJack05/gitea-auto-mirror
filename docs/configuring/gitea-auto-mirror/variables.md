@@ -1,8 +1,8 @@
 # Configuration Variables 
 
-Gitea auto mirror is configured via environment variables.
+Gitea Auto Mirror is configured via environment variables.
 
-## Configuring the mirror
+## Configuring the Mirror
 
 | Variable | Required | Default | Type | Description | Example |
 | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
@@ -14,13 +14,13 @@ Gitea auto mirror is configured via environment variables.
 | GITEA_AUTO_MIRROR_MIRROR_SYNC_INTERVAL | no | 8h | Go time format (aka string) | The interval between syncs if no push is performed | 3h10m |
 
 
-## Source configuration
+## Source Configuration
 | Variable | Required | Default | Type | Description | Example |
 | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
-| GITEA_AUTO_MIRROR_SOURCE_BASE_URL     | yes | N/A | string | The URL of the source gitea server | http://source.example.com:3000/ |
+| GITEA_AUTO_MIRROR_SOURCE_BASE_URL     | yes | N/A | string | The URL of the source Gitea server | http://source.example.com:3000/ |
 | GITEA_AUTO_MIRROR_SOURCE_VERIFY_TLS   | no  | true| string | Whether to verify TLS certificates for the source server | true <br> false |
-| GITEA_AUTO_MIRROR_SOURCE_USERNAME     | yes | N/A | string | The Username for the source gitea server | username |
-| GITEA_AUTO_MIRROR_SOURCE_PASSWORD     | yes | N/A | string | The Password for the source gitea server | Password123 |
+| GITEA_AUTO_MIRROR_SOURCE_USERNAME     | yes | N/A | string | The username for the source Gitea server | username |
+| GITEA_AUTO_MIRROR_SOURCE_PASSWORD     | yes | N/A | string | The password for the source Gitea server | Password123 |
 
 ## Authentication Settings
 
