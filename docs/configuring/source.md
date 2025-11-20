@@ -33,7 +33,7 @@ Finally click "Add Webhook".
 
 ### Configuring at Organization level
 
-On your gitea instance, naviate to your organizaiton and then navigate to Settings>Webhooks.
+On your gitea instance, navigate to your organization and then navigate to Settings>Webhooks.
 Now, add a webhook with type "Gitea".
 Under target URL, enter the URL of your Gitea Auto Mirror instance. 
 Select "POST" as HTTP request method and "application/json".

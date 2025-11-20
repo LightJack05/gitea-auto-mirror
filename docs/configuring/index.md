@@ -7,7 +7,7 @@ Your source server will need to be configured to trust the webhook URL, you will
 Detailed source instance configuration is described in [Configuring the source server](source.md).
 
 ## Configuring Gitea Auto Mirror
-Gitea auto mirror needs to be configured properly to provide a secure communication between the api and the source server, to properly forward the requests and match the correct repositories, and to make sure that gitea auto mirror pushes the correct credentails to the remote.
+Gitea auto mirror needs to be configured properly to provide a secure communication between the api and the source server, to properly forward the requests and match the correct repositories, and to make sure that gitea auto mirror pushes the correct credentials to the remote.
 
 Detailed configuration options for gitea auto mirror can be found here in [Configuring Gitea Auto Mirror](gitea-auto-mirror.md).
 
