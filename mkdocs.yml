@@ -1,8 +1,19 @@
 site_name: Gitea Auto Mirror Documentation
+markdown_extensions:
+  - admonition
 theme:
-  name: mkdocs
-  color_mode: auto
-  user_color_mode_toggle: true
+  name: material
+  palette:
+    scheme: slate
+    primary: teal
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.path
+    - toc.follow
+    - toc.integrate
+    - content.action.edit
+    - content.action.view
 nav:
   - Home: index.md
   - Installing:
@@ -14,4 +25,7 @@ nav:
     - Source Configuration: configuring/source.md
     - Gitea Auto Mirror Configuration: configuring/gitea-auto-mirror.md
     - Mirror Configuration: configuring/mirror.md
-    
+repo_url: https://github.com/LightJack05/gitea-auto-mirror
+edit_uri: edit/main/docs/
+plugins:
+  - privacy
