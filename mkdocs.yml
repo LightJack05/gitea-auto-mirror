@@ -22,9 +22,13 @@ nav:
     - Kubernetes: installing/kubernetes.md
   - Configuration: 
     - Introduction: configuring/index.md
-    - Source Configuration: configuring/source.md
-    - Gitea Auto Mirror Configuration: configuring/gitea-auto-mirror.md
-    - Mirror Configuration: configuring/mirror.md
+    - Source Configuration: 
+      - Configuration Options: configuring/source.md
+    - Gitea Auto Mirror Configuration:  
+      - Configuration Variables: configuring/gitea-auto-mirror/variables.md
+      - Authentication: configuring/gitea-auto-mirror/authentication.md
+    - Mirror Configuration: 
+      - Configuration Options: configuring/mirror.md
 repo_url: https://github.com/LightJack05/gitea-auto-mirror
 edit_uri: edit/main/docs/
 plugins:

@@ -1,4 +1,4 @@
-# Configuring Gitea auto mirror
+# Configuration Variables 
 
 Gitea auto mirror is configured via environment variables.
 
@@ -21,9 +21,13 @@ Gitea auto mirror is configured via environment variables.
 | GITEA_AUTO_MIRROR_SOURCE_VERIFY_TLS   | no  | true| string | Whether to verify TLS certificates for the source server | true <br> false |
 | GITEA_AUTO_MIRROR_SOURCE_USERNAME     | yes | N/A | string | The Username for the source gitea server | username |
 | GITEA_AUTO_MIRROR_SOURCE_PASSWORD     | yes | N/A | string | The Password for the source gitea server | Password123 |
+
+## Authentication Settings
+
+| Variable | Required | Default | Type | Description | Example |
+| --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
 | GITEA_AUTO_MIRROR_API_PASSWORD_HASH   | no  | ""  | string | The hash to use for password authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication]()) | $argon2id$v=19$m=65536,t=2,p=1$aVdKZ3B3djJXcDIydnlKZjJ0L3RWUT09$k8ZJITqnD6n8C9tavbZX8rv6pO6mbvIi/Lpzt8V0ZuY |
 | GITEA_AUTO_MIRROR_API_PASSWORD        | no  | ""  | string | The plaintext password to use for authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication]() | Password123 |
-
 
 ## Repository Filtering
 
