@@ -7,7 +7,7 @@ Gitea Auto Mirror is configured via environment variables.
 | Variable | Required | Default | Type | Description | Example |
 | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
 | GITEA_AUTO_MIRROR_MIRROR_BASE_URL | yes | N/A | URL (aka string) | The URL of the upstream mirror | http://mirror.example.com:3000/ <br> https://mirror.example.com/ |
-| GITEA_AUTO_MIRROR_MIRROR_URL_APPEND_DOT_GIT | no | Bool | false | Whether to append a .git to the repository URL in the mirror entry | true <br> false |
+| GITEA_AUTO_MIRROR_MIRROR_URL_APPEND_DOT_GIT | no | false | Bool | Whether to append a .git to the repository URL in the mirror entry | true <br> false |
 | GITEA_AUTO_MIRROR_MIRROR_USERNAME | yes | N/A | string | The mirror server username to use for mirroring | username |
 | GITEA_AUTO_MIRROR_MIRROR_PASSWORD | yes | N/A | string | The mirror server password or token to use for mirroring | Password123 |
 | GITEA_AUTO_MIRROR_MIRROR_VERIFY_TLS | no | true | Bool | Whether to verify TLS certificates on the remote | false |
