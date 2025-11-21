@@ -9,7 +9,7 @@ Detailed source instance configuration is described in [Configuring the source s
 ## Configuring Gitea Auto Mirror
 Gitea Auto Mirror needs to be configured properly to provide a secure communication between the API and the source server, to properly forward the requests and match the correct repositories, and to make sure that Gitea Auto Mirror pushes the correct credentials to the remote.
 
-Detailed configuration options for Gitea Auto Mirror can be found here in [Configuring Gitea Auto Mirror](gitea-auto-mirror.md).
+Detailed configuration options for Gitea Auto Mirror can be found here in [Configuring Gitea Auto Mirror](gitea-auto-mirror/variables.md).
 
 ## Configuring the mirror server
 The mirror server must be configured to allow for "push to create", which is usually an available option on most git servers.
