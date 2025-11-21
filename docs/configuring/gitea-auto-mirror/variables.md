@@ -26,8 +26,8 @@ Gitea Auto Mirror is configured via environment variables.
 
 | Variable | Required | Default | Type | Description | Example |
 | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
-| GITEA_AUTO_MIRROR_API_PASSWORD_HASH   | no  | ""  | string | The hash to use for password authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication]()) | $argon2id$v=19$m=65536,t=2,p=1$aVdKZ3B3djJXcDIydnlKZjJ0L3RWUT09$k8ZJITqnD6n8C9tavbZX8rv6pO6mbvIi/Lpzt8V0ZuY |
-| GITEA_AUTO_MIRROR_API_PASSWORD        | no  | ""  | string | The plaintext password to use for authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication]() | Password123 |
+| GITEA_AUTO_MIRROR_API_PASSWORD_HASH   | no  | ""  | string | The hash to use for password authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication](authentication.md)) | $argon2id$v=19$m=65536,t=2,p=1$aVdKZ3B3djJXcDIydnlKZjJ0L3RWUT09$k8ZJITqnD6n8C9tavbZX8rv6pO6mbvIi/Lpzt8V0ZuY |
+| GITEA_AUTO_MIRROR_API_PASSWORD        | no  | ""  | string | The plaintext password to use for authentication between the source server and Gitea Auto Mirror (See [Configuring Authentication](authentication.md)) | Password123 |
 
 ## Repository Filtering
 
