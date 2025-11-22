@@ -8,3 +8,6 @@ data-clean/
 .env*
 docker-compose*
 *.md
+docs/
+mkdocs.yml
+Makefile
