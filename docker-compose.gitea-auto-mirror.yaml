@@ -13,6 +13,7 @@ services:
       - GITEA_AUTO_MIRROR_APP_DEBUG_LOGGING=true
       - GITEA_AUTO_MIRROR_DISABLE_CONFIG_CHECK=false
       - GITEA_AUTO_MIRROR_MIRROR_SYNC_INTERVAL=3h
+      - GIN_MODE=debug
     build: .
     ports:
       - 8083:8080
