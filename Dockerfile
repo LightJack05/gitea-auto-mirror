@@ -9,6 +9,7 @@ COPY . .
 RUN go build -o /app/gitea-auto-mirror
 
 FROM alpine:latest
+ENV GIN_MODE=release
 
 WORKDIR /app
 COPY LICENSES /licenses
