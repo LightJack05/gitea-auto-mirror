@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -106,6 +107,11 @@ func buildRepoApiUrl(createEvent datastructures.RepoCreateEvent) string {
 func addMirrorToRepo(requestBodyJson string, repoApiUrl string) error {
 	client := &http.Client{
 		Timeout: 10 * time.Second,
+		Transport: &http.Transport {
+			TLSClientConfig: &tls.Config {
+				InsecureSkipVerify: !config.GetActiveConfig().SourceVerifyTLS,
+			},
+		},
 	}
 
 	req, err := http.NewRequest("POST", repoApiUrl, bytes.NewBuffer([]byte(requestBodyJson)))
