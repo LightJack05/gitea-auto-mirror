@@ -67,4 +67,4 @@ jobs:
         with:
           generateReleaseNotes: true
           tag: ${{ steps.tag_version.outputs.new_tag }}
-          prerelease: true
+          prerelease: false
