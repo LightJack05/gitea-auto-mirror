@@ -26,6 +26,11 @@ func RepoCreatePost(c *gin.Context) {
 		return
 	}
 
+	if !(createEvent.Action == "created") {
+		c.Status(http.StatusNoContent)
+		return
+	}
+
 	if !shouldModifyRepo(createEvent.Repository.FullName) {
 		if config.GetActiveConfig().AppDebugLogging {
 			log.Printf("Request for repo %s has been ignored due to regex filter.", createEvent.Repository.FullName)
