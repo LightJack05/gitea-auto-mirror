@@ -107,8 +107,8 @@ func buildRepoApiUrl(createEvent datastructures.RepoCreateEvent) string {
 func addMirrorToRepo(requestBodyJson string, repoApiUrl string) error {
 	client := &http.Client{
 		Timeout: 10 * time.Second,
-		Transport: &http.Transport {
-			TLSClientConfig: &tls.Config {
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: !config.GetActiveConfig().SourceVerifyTLS,
 			},
 		},
