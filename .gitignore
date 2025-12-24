@@ -20,3 +20,4 @@ go.work.sum
 
 site/
 .cache/
+flake.lock
