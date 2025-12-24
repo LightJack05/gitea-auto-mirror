@@ -33,7 +33,6 @@
 
             # Environment variables
             GOPRIVATE = "";
-            GONOPROXY = "github.com/SnackLog/*";
 
             shellHook = ''
               echo "Go development shell ready"
